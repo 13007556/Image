@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import subprocess, time
 ImageNameDecided = 0
 
@@ -20,6 +22,5 @@ outputFullName = imageName+imageDate
 
 ##	Running DCFLDD
 
-subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=md5.txt", "sha256log=sha256.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
-
-print	"Done"
+proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
+proc.wait()
