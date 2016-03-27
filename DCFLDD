@@ -1,0 +1,25 @@
+import subprocess, time
+ImageNameDecided = 0
+
+##	Deciding the image name
+while ImageNameDecided != 1:
+	imageName = raw_input("Your output image name:  ")
+	print "You said: ", imageName
+
+	nameYN = raw_input("Are you sure? (Type Y or N)").lower()
+
+	if nameYN == 'y':
+		ImageNameDecided = 1
+	else:
+		print ""
+
+##	Date for image name
+imageDate = time.strftime("_%d-%m-%Y_%H:%M")
+
+outputFullName = imageName+imageDate
+
+##	Running DCFLDD
+
+subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=md5.txt", "sha256log=sha256.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
+
+print	"Done"
