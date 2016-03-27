@@ -2,18 +2,33 @@
 
 import subprocess, time
 ImageNameDecided = 0
+CopiesDecided = 0
 
 ##	Deciding the image name
 while ImageNameDecided != 1:
 	imageName = raw_input("Your output image name:  ")
 	print "You said: ", imageName
 
-	nameYN = raw_input("Are you sure? (Type Y or N)").lower()
+	nameYN = raw_input("Are you sure? (Type Y or N)	").lower()
 
 	if nameYN == 'y':
 		ImageNameDecided = 1
 	else:
 		print ""
+
+##	How many copies? Per USB
+while CopiesDecided !=1:
+	copyNum = raw_input("How many USB sticks have been plugged in?	")
+	if copyNum < '1':
+		print "This is an incorrect number, please try again."
+	elif  copyNum > '4':
+		print "This is an incorrect number, please try again."
+	else:
+		copiesYN = raw_input("Are you sure? (Type Y or N)	").lower()
+		if copiesYN == 'y':
+			CopiesDecided = 1
+
+print "So you want %s copies", copyNum
 
 ##	Date for image name
 imageDate = time.strftime("_%d-%m-%Y_%H:%M")
@@ -21,6 +36,18 @@ imageDate = time.strftime("_%d-%m-%Y_%H:%M")
 outputFullName = imageName+imageDate
 
 ##	Running DCFLDD
+if copyNum == '1': 
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
+	proc.wait()
 
-proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
-proc.wait()
+elif copyNum == '2':
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img"])
+	proc.wait()
+
+elif copyNum == '3':
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img", "of=%s"%outputFullName+"_3.img"])
+	proc.wait()
+
+elif copyNum == '4':
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img", "of=%s"%outputFullName+"_3.img", "of=%s"%outputFullName+"._4img"])
+	proc.wait()
