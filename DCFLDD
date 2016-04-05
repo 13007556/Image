@@ -2,6 +2,7 @@
 
 import subprocess, time
 USBsDone = 0
+USBMountComplete = 0
 ImageNameDecided = 0
 CopiesDecided = 0
 
@@ -23,14 +24,14 @@ while USBMountComplete !=1:
 
 	mountNumber = raw_input("Enter which mount point you wish to use (1,2,3 or 4):  ")
 
-	proc.Mount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{1}".format(mountNumber)])
-
+	procMount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{0}".format(mountNumber)])
+	procMount.wait()
 
 
 	nameYN = raw_input("Enter Y if you are finished mounting:	").lower()
 
 	if nameYN == 'y':
-		USBsDone = 1
+		USBMountComplete = 1
 	else:
 		print ""
 
