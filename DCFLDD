@@ -4,6 +4,35 @@ import subprocess, time
 ImageNameDecided = 0
 CopiesDecided = 0
 
+##	Mounting
+print "Please plug in USBs to be imaged to"
+while USBsDone != 1:
+	nameYN = raw_input("Enter Y when complete:	").lower()
+
+	if nameYN == 'y':
+		USBsDone = 1
+	else:
+		print ""
+while USBMountComplete !=1:
+	procUSB = subprocess.Popen(["lsblk"])
+	procUSB.wait()
+
+	print "These are the USBs currently plugged into the device."
+	mountName = raw_input("Enter the USB (e.g. sda1):  ")
+
+	mountNumber = raw_input("Enter which mount point you wish to use (1,2,3 or 4):  ")
+
+	proc.Mount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{1}".format(mountNumber)])
+
+
+
+	nameYN = raw_input("Enter Y if you are finished mounting:	").lower()
+
+	if nameYN == 'y':
+		USBsDone = 1
+	else:
+		print ""
+
 ##	Deciding the image name
 while ImageNameDecided != 1:
 	imageName = raw_input("Your output image name:  ")
@@ -28,26 +57,44 @@ while CopiesDecided !=1:
 		if copiesYN == 'y':
 			CopiesDecided = 1
 
-print "So you want %s copies", copyNum
+print "So you want {0} copies" .format(copyNum)
 
 ##	Date for image name
-imageDate = time.strftime("_%d-%m-%Y_%H:%M")
+imageDate = time.strftime("_%d-%m-%Y_%Hhrs%Mmins")
 
 outputFullName = imageName+imageDate
 
+##	What USB?
+procUSB = subprocess.Popen(["lsblk"])
+procUSB.wait()
+
+inUSB = raw_input("Which USB is your evidence item (removing the number, e.g. sda1 becomes sda):  ")
+
+outUSB = raw_input("Please enter the full file path of the USB you are writing to (/media/name/TEST-0001/):  ")
+
+
 ##	Running DCFLDD
 if copyNum == '1': 
-	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img"])
+	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img"])
 	proc.wait()
 
 elif copyNum == '2':
-	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img"])
+	outUSB2 = raw_input("Please enter the full file path of the SECOND USB you are writing to:  ")
+
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName) +".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img"])
 	proc.wait()
 
 elif copyNum == '3':
-	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img", "of=%s"%outputFullName+"_3.img"])
+	outUSB2 = raw_input("Please enter the full file path of the SECOND USB you are writing to:  ")
+	outUSB3 = raw_input("Please enter the full file path of the THIRD USB you are writing to:  ")
+
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img"])
 	proc.wait()
 
 elif copyNum == '4':
-	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of=%s"%outputFullName+".img", "of=%s"%outputFullName+"_2.img", "of=%s"%outputFullName+"_3.img", "of=%s"%outputFullName+"._4img"])
+	outUSB2 = raw_input("Please enter the full file path of the SECOND USB you are writing to:  ")
+	outUSB3 = raw_input("Please enter the full file path of the THIRD USB you are writing to:  ")
+	outUSB4 = raw_input("Please enter the full file path of the FOURTH USB you are writing to:  ")
+
+	proc = subprocess.Popen(["dcfldd", "if=/dev/sdb", "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img", "of={0}{1}".format(outUSB4, outputFullName) +"_4.img"])
 	proc.wait()
