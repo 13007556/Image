@@ -1,11 +1,12 @@
 #!/usr/bin/python
 
 import subprocess, time
+USBsDone = 0
 ImageNameDecided = 0
 CopiesDecided = 0
 
 ##	Mounting
-print "Please plug in USBs to be imaged to"
+print "Please plug in USBs to be imaged onto"
 while USBsDone != 1:
 	nameYN = raw_input("Enter Y when complete:	").lower()
 
