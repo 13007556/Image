@@ -4,37 +4,43 @@ import subprocess, time
 USBsDone = 0
 USBMountComplete = 0
 ImageNameDecided = 0
-CopiesDecided = 0
 
-##	Mounting
-print "Please plug in USBs to be imaged onto"
-while USBsDone != 1:
-	nameYN = raw_input("Enter Y when complete:	").lower()
+nameYN = raw_input("Do you need to mount USBs? (Enter Y, otherwise N):	").lower()
 
-	if nameYN == 'y':
-		USBsDone = 1
-	else:
-		print ""
-while USBMountComplete !=1:
-	procUSB = subprocess.Popen(["lsblk"])
-	procUSB.wait()
+if nameYN == 'y':
+	##	Mounting
+	print "Please plug in USBs to be imaged onto"
+	while USBsDone != 1:
+		nameYN = raw_input("Enter Y when complete:	").lower()
 
-	print "These are the USBs currently plugged into the device."
-	mountName = raw_input("Enter the USB (e.g. sda1):  ")
+		if nameYN == 'y':
+			USBsDone = 1
+		else:
+			print ""
+	while USBMountComplete !=1:
+		procUSB = subprocess.Popen(["lsblk"])
+		procUSB.wait()
 
-	mountNumber = raw_input("Enter which mount point you wish to use (1,2,3 or 4):  ")
+		print "These are the USBs currently plugged into the device."
+		mountName = raw_input("Enter the USB (e.g. sda1):  ")
 
-	procMount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{0}".format(mountNumber)])
-	procMount.wait()
+		mountNumber = raw_input("Enter which mount point you wish to use (1,2,3 or 4):  ")
+
+		procMountFolder = subprocess.Popen(["mkdir", "/media/{0}".format(mountNumber)])
+		procMountFolder.wait() 
+		procMount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{0}".format(mountNumber)])
+		procMount.wait()
 
 
-	nameYN = raw_input("Enter Y if you are finished mounting:	").lower()
+		nameYN = raw_input("Enter Y if you are finished mounting:	").lower()
 
-	if nameYN == 'y':
-		USBMountComplete = 1
-	else:
-		print ""
-
+		if nameYN == 'y':
+			USBMountComplete = 1
+		else:
+			print ""
+else:
+	print ""
+	
 ##	Deciding the image name
 while ImageNameDecided != 1:
 	imageName = raw_input("Your output image name:  ")
