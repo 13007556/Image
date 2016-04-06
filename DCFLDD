@@ -5,6 +5,7 @@ USBsDone = 0
 USBMountComplete = 0
 ImageNameDecided = 0
 MountDecided = 0
+CopiesDecided = 0
 
 while MountDecided != 1:
 	nameYN = raw_input("Do you need to mount USBs? (Enter Y, otherwise N):	").lower()
