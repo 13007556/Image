@@ -30,7 +30,7 @@ while MountDecided != 1:
 
 			procMountFolder = subprocess.Popen(["mkdir", "/media/{0}".format(mountNumber)])
 			procMountFolder.wait() 
-			procMount = subprocess.Popen(["mount", "{0}".format(mountName), "/media/{0}".format(mountNumber)])
+			procMount = subprocess.Popen(["mount", "/dev/{0}".format(mountName), "/media/{0}".format(mountNumber)])
 			procMount.wait()
 
 
@@ -86,20 +86,20 @@ outUSB = raw_input("Please enter the full file path of the USB you are writing t
 
 ##	Running DCFLDD
 if copyNum == '1': 
-	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img"])
+	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log={0}{1}".format(outUSB, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB, outputFullName)+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img"])
 	proc.wait()
 
 elif copyNum == '2':
 	outUSB2 = raw_input("Please enter the full file path of the SECOND USB you are writing to:  ")
 
-	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName) +".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img"])
+	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log={0}{1}".format(outUSB, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB, outputFullName)+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName) +".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img",  "md5log={0}{1}".format(outUSB2, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB2, outputFullName)+"_Sha1.txt"])
 	proc.wait()
 
 elif copyNum == '3':
 	outUSB2 = raw_input("Please enter the full file path of the SECOND USB you are writing to:  ")
 	outUSB3 = raw_input("Please enter the full file path of the THIRD USB you are writing to:  ")
 
-	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img"])
+	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log={0}{1}".format(outUSB, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB, outputFullName)+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img", "md5log={0}{1}".format(outUSB2, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB2, outputFullName)+"_Sha1.txt", "md5log={0}{1}".format(outUSB3, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB3, outputFullName)+"_Sha1.txt"])
 	proc.wait()
 
 elif copyNum == '4':
@@ -107,5 +107,5 @@ elif copyNum == '4':
 	outUSB3 = raw_input("Please enter the full file path of the THIRD USB you are writing to:  ")
 	outUSB4 = raw_input("Please enter the full file path of the FOURTH USB you are writing to:  ")
 
-	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log=%s"%outputFullName+"_Hash.txt", "sha256log=%s"%outputFullName+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img", "of={0}{1}".format(outUSB4, outputFullName) +"_4.img"])
+	proc = subprocess.Popen(["dcfldd", "if=/dev/{0}".format(inUSB), "hash=md5,sha256", "md5log={0}{1}".format(outUSB, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB, outputFullName)+"_Sha1.txt", "hashconv=after", "bs=512", "conv=noerror,sync", "of={0}{1}".format(outUSB, outputFullName)+".img", "of={0}{1}".format(outUSB2, outputFullName) +"_2.img", "of={0}{1}".format(outUSB3, outputFullName) +"_3.img", "of={0}{1}".format(outUSB4, outputFullName) +"_4.img", "md5log={0}{1}".format(outUSB2, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB2, outputFullName)+"_Sha1.txt", "md5log={0}{1}".format(outUSB3, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB3, outputFullName)+"_Sha1.txt", "md5log={0}{1}".format(outUSB4, outputFullName)+"_Hash.txt", "sha256log={0}{1}".format(outUSB4, outputFullName)+"_Sha1.txt"])
 	proc.wait()
